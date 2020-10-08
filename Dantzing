@@ -1,0 +1,22 @@
+from pulp import *
+
+name = {'x1', 'x2'}
+profit = {'x1': 2, 'x2': 3}
+m1 = {'x1': 1, 'x2': 2}
+m2 = {'x1': 4, 'x2': 0}
+m3 = {'x1': 0, 'x2': 4}
+
+prob = LpProblem('problem2', LpMaximize)
+
+ver = LpVariable.dicts('变量', name, 0, None, LpContinuous)
+prob += lpSum([profit[i] * ver[i] for i in name])
+prob += lpSum([m1[i] * ver[i] for i in name]) <= 8
+prob += lpSum([m2[i] * ver[i] for i in name]) <= 16
+prob += lpSum([m3[i] * ver[i] for i in name]) <= 12
+
+prob.writeLP("problem1.lp")
+prob.solve()
+print('\n', 'status', LpStatus[prob.status], '\n')
+for v in prob.variables():
+    print('\t', v.name, '=', v.varValue, '\n')
+print('Maximun Daily Profit =', value(prob.objective))
