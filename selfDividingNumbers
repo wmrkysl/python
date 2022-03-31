@@ -1,0 +1,13 @@
+def selfDividingNumbers(left, right):
+    list = []
+    for i in range(left, right + 1):
+        n1 = str(i)
+        num = len(n1)
+        for j in range(0, num):
+            if (int(n1[j]) != 0) and (i % int(n1[j]) == 0):
+                continue
+            else:
+                break
+        else:
+            list.append(i)
+    return list
